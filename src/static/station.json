@@ -1,0 +1,355 @@
+{
+    "stations": [
+      {
+        "name": "Automotive Square",
+        "code": "autsq",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 1,
+        "lat": "21.1855856",
+        "long": "79.1175765"
+      },
+      {
+        "name": "Nari Road",
+        "code": "narro",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 1,
+        "lat": "21.1796016",
+        "long": "79.1078933"
+      },
+      {
+        "name": "Indora Square",
+        "code": "indsq",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 1,
+        "lat": "21.1729797",
+        "long": "79.0982072"
+      },
+      {
+        "name": "Kadbi Chowk",
+        "code": "kadch",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 1,
+        "lat": "21.1688707",
+        "long": "79.0901175"
+      },
+      {
+        "name": "Gaddi Godam Square",
+        "code": "gadgo",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 1,
+        "lat": "21.1601634",
+        "long": "79.0818005"
+      },
+      {
+        "name": "Kasturchand Park",
+        "code": "kaspa",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.154399",
+        "long": "79.0793023"
+      },
+      {
+        "name": "Zero Mile Freedom Park",
+        "code": "zermi",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1466782",
+        "long": "79.0787168"
+      },
+      {
+        "name": "Sitabuldi (NS)",
+        "code": "sitns",
+        "isJunction": true,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1416117",
+        "long": "79.0805289"
+      },
+      {
+        "name": "Congress Nagar",
+        "code": "conna",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1278076",
+        "long": "79.0801869"
+      },
+      {
+        "name": "Rahate Colony",
+        "code": "rahco",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1278904",
+        "long": "79.0736082"
+      },
+      {
+        "name": "Ajni Square",
+        "code": "ajnsq",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Chhatrapati Square",
+        "code": "chhsq",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Jaiprakash Nagar",
+        "code": "jaina",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Ujjwal Nagar",
+        "code": "ujjna",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Airport",
+        "code": "airpo",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Airport South",
+        "code": "airso",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "New Airport",
+        "code": "newai",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Khapri",
+        "code": "khapr",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 1,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Prajapati Nagar",
+        "code": "prana",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Vaishnao Devi Chowk",
+        "code": "vaide",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Ambedkar Chowk",
+        "code": "ambch",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Telephone Exchange",
+        "code": "telex",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Chitar Oli Chowk",
+        "code": "chiol",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "21.1183094",
+        "long": "79.0699623"
+      },
+      {
+        "name": "Agrasen Chowk",
+        "code": "agrch",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Dosar Vaisya Chowk",
+        "code": "dosva",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Nagpur Railway Station",
+        "code": "nagra",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Cotton Market",
+        "code": "cotma",
+        "isJunction": false,
+        "isOpenStation": false,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Sitabuldi (EW)",
+        "code": "sitew",
+        "isJunction": true,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Cotton Market",
+        "code": "cotma",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Jhansi Rani Square",
+        "code": "jhara",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Institution of Engineers",
+        "code": "insen",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Shankar Nagar Square",
+        "code": "shana",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "LAD Chowk",
+        "code": "ladch",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Dharampeth College",
+        "code": "dhaco",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Subhash Nagar",
+        "code": "subna",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Rachana Ring Road",
+        "code": "racri",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Vasudev Nagar",
+        "code": "vasna",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Bansi Nagar",
+        "code": "banna",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      },
+      {
+        "name": "Lokmanya Nagar",
+        "code": "lokna",
+        "isJunction": false,
+        "isOpenStation": true,
+        "alignment": 2,
+        "lat": "",
+        "long": ""
+      }
+    ]
+  }
