@@ -11,6 +11,7 @@ import PayCard from "./component/PayCard";
 import PaymentForm from "./component/Form";
 import { getStationList,getFare } from "./api/agent";
 import toast, { Toaster } from "react-hot-toast";
+import './index.css'
 
 interface StationListData {
   _id: string;
@@ -261,10 +262,11 @@ function App() {
                           sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
                           noValidate
                           autoComplete="off"
-                        >
+                        ><div>
                           <TextField
                             id="outlined-number"
-                            label="Numbear"
+                            variant="outlined"
+                            label="number"
                             type="number"
                             value={ticketsNo}
                             InputLabelProps={{
@@ -275,6 +277,7 @@ function App() {
                               setTicketsNo(event.target.value);
                             }}
                           />
+                          </div>
                         </Box>
                         
                       </div>

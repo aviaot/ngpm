@@ -2,7 +2,7 @@ import React from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import config from "../config";
 import GoogleMapReact from "google-map-react";
-import "./MarkerStyle.css";
+import "./googlemap.css";
 import stationList from "../static/station.json";
 
 const Marker = ({ text, color }) => {
@@ -44,10 +44,7 @@ const GoogleMap = () => {
 
    return(
   <div style={{ height: "60vh", margin: 10 }} className="card-body">
-  <iframe
-  src="https://www.google.com/maps/d/viewer?mid=1Abjh72BYbNo2snTpBhWCWTtzLtEvbhly&ll=21.103957657393206%2C79.07195250000001&z=12"
-  
-  ></iframe>
+<iframe src="https://www.google.com/maps/d/embed?mid=1Abjh72BYbNo2snTpBhWCWTtzLtEvbhly&ehbc=2E312F" width="640" height="480"></iframe>
   </div>
 );
  
