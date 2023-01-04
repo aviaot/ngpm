@@ -9,7 +9,7 @@ import { useToaster } from "react-hot-toast/headless";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import PayCard from "./component/PayCard";
 import PaymentForm from "./component/Form";
-import { getStationList } from "./api/agent";
+import { getStationList,getFare } from "./api/agent";
 import toast, { Toaster } from "react-hot-toast";
 
 interface StationListData {
@@ -30,25 +30,37 @@ interface QueryParamData {
 function App() {
   const [fromStation, setFromStation] = useState<StationListData | null>(null);
   const [toStation, setToStation] = useState<StationListData | null>(null);
-  const [ticketsNo, setTicketsNo] = useState(0);
+  const [ticketsNo, setTicketsNo] = useState(1);
   const [ticketType, setTicketType] = useState("");
   const [sessionId,setSessionId] = useState("");
   const [stationList, setStationList] = useState<StationListData[]>([
     { sourceStation: "Khapri", stationCode: "KHP", name: "Khapri", _id: "1" },
   ]);
   const [isPayment, setIsPaymentPage] = useState(false);
-  const [fare, setFare] = useState("");
+  const [fare, setFare] = useState(0);
   const notifySuccess = (message: string) => toast.success(message);
   const notifyError = (message: string) => toast.error(message);
 
   useEffect(() => {
-    // if(fromStation && toStation && fromStation.stationCode !==toStation.stationCode)
-    // {
-    //   setFare("5");
-    // } else{
-    //   setFare("");
-    // }
+    if(fromStation && toStation && fromStation.stationCode !==toStation.stationCode)
+    {
+      getFareData();
+    } else{
+      setFare(0);
+    }
+
   }, [fromStation, toStation]);
+
+  async function getFareData() {
+    try {
+      if(fromStation && fromStation?.stationCode && toStation && toStation?.stationCode){
+      const { data } = await getFare(fromStation.stationCode, toStation.stationCode);
+      let fare_ = data.fare;
+      fare_ = fare_.split("")[0];
+      setFare(fare_);
+      }
+    } catch (error) {}
+  }
 
   const getQueryParams = (query = null) => {
     return (
@@ -110,7 +122,7 @@ function App() {
         setToStation(destiObject as StationListData);
       }
       if (res.transactionAmount) {
-        setFare(res.transactionAmount);
+        setFare(parseInt(res.transactionAmount, 0));
       }
       if (res.numberOfTickets) {
         setTicketsNo(parseInt(res.numberOfTickets, 0));
@@ -177,12 +189,12 @@ function App() {
                       <h5 className="card-title pricing-card-title plan-text">
                         Plan Your Journey
                       </h5>
-                      <p>
+                      {/* <p>
                         Click here to plan through
                         <a href="#" className="text-decoration-none">
                           <span>Interactive Map</span>
                         </a>
-                      </p>
+                      </p> */}
                       <div className="mb-3">
                         <label className="form-label custom-label">From:</label>
                         {/* <select
@@ -258,8 +270,13 @@ function App() {
                             InputLabelProps={{
                               shrink: true,
                             }}
+                            onChange={(event : any) => {
+                              //console.log(val);
+                              setTicketsNo(event.target.value);
+                            }}
                           />
                         </Box>
+                        
                       </div>
                       {/* <div className="mb-0">
                     <label className="form-label custom-label">Leaving:</label>
@@ -280,13 +297,50 @@ function App() {
                       toStation &&
                       fromStation.stationCode !== toStation.stationCode ? (
                         <h5 className="card-title pricing-card-title advance-filter">
-                          {`${fromStation?.stationCode} - ${toStation?.stationCode}`}
+                          {`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`}
                         </h5>
                       ) : null}
                       <h5 className="card-title pricing-card-title advance-filter">
-                        {`Total Fare : ${fare} ₹`}
+                        {`Total Fare : ${fare * ticketsNo} ₹`}
                       </h5>
                       <div>
+                      <button
+                        type="button"
+                        className="w-45 btn btn-lg btn-primary submit-btn"
+                        onClick={async(e) => {
+                          
+                          //e.target.focus();
+                        
+                       
+                          if (fromStation && toStation) {
+                            if (
+                              fromStation.stationCode === toStation.stationCode
+                            ) {
+                              notifyError(
+                                "Source and destination can not be same"
+                              );
+                            } else {
+                              if ("clipboard" in navigator) {
+                                await navigator.clipboard.writeText(`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`);
+                              } else {
+                                document.execCommand("copy", true, `${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`);
+                              }
+                              notifySuccess(
+                                "Data Copied"
+                              );
+                            }
+                          } else {
+                            notifyError(
+                              "Source or destination can not be empty"
+                            );
+                          }
+                        }}
+                      >
+                        Copy
+                      </button> 
+          
+        </div>
+                      {/* <div>
                         <div>
                           <img
                             src="./assets/distance.png"
@@ -332,7 +386,7 @@ function App() {
                         }}
                       >
                         Pay
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>

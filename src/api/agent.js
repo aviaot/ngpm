@@ -2,6 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 export const ROOT_URL = 'https://chatbotomkaraonline.southindia.cloudapp.azure.com/';
+//"http://localhost:4000";
 
 const agent = axios.create({
   baseURL: ROOT_URL,
@@ -41,5 +42,9 @@ export const getStationList = () => {
   return agent.get('/v1/stations');
 };
 
+
+export const getFare = (from,to) => {
+  return agent.get(`/v1/stations/fare?sourceStationCode=${from}&destinationStationCode=${to}`);
+};
 
 export default agent;
