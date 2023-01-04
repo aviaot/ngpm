@@ -1,7 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 
-export const ROOT_URL = 'http://192.168.29.79:4000';
+export const ROOT_URL = 'https://chatbotomkaraonline.southindia.cloudapp.azure.com/';
 
 const agent = axios.create({
   baseURL: ROOT_URL,
