@@ -44,7 +44,7 @@ const GoogleMap = () => {
 
    return(
   <div style={{ height: "60vh", margin: 10 }} className="card-body">
-<iframe src="https://www.google.com/maps/d/embed?mid=1Abjh72BYbNo2snTpBhWCWTtzLtEvbhly&ehbc=2E312F" width="640" height="480"></iframe>
+<iframe src="https://www.google.com/maps/d/embed?mid=1Abjh72BYbNo2snTpBhWCWTtzLtEvbhly&ehbc=2E312F" width="640" height="470" ></iframe>
   </div>
 );
  

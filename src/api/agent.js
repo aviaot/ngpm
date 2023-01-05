@@ -47,4 +47,24 @@ export const getFare = (from,to) => {
   return agent.get(`/v1/stations/fare?sourceStationCode=${from}&destinationStationCode=${to}`);
 };
 
+export const paymentApiCall = (postData) => {
+  return agent.post('/v1/payments',postData);
+};
+
+
 export default agent;
+
+// {
+//   "transactionId": "121",
+//   "sessionId":"refegeg42e4e24e",
+//   "transactionAmount": 10.9,
+//   "ticketType": "one-way",
+//   "numberOfTickets": 1,
+//   "sourceStation": "ABC",
+//   "destinationStation": "XYZ",
+//   "tickets":[{
+//       "ticketId": "1",
+//       "ticketQR":"ABC",
+//       "ticketStatus":"confirmed"
+//   }]
+// }

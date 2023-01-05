@@ -52,7 +52,7 @@ export default function Success() {
           color="success"
           gutterBottom
         >
-          <b> Order Confirmed </b>
+          <b> Confirmed </b>
         </Typography>
       </CardContent>
     </Card>

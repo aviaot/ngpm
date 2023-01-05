@@ -17,6 +17,9 @@ import PaymentMode from "./PaymentMode";
 import Success from "./Success";
 import PayCard from "./PayCard";
 import Footer from "./Footer";
+import { paymentApiCall } from "../api/agent";
+import { v4 as uuid } from 'uuid';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -41,29 +44,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
- // return ["Enter Details", "Payment Mode", "Payment", "Order Confirmed"];
- return ["Payment Mode", "Payment", "Order Confirmed"];
+  // return ["Enter Details", "Payment Mode", "Payment", "Order Confirmed"];
+  return ["Payment Mode", "Payment", "Payment Success"];
 
 }
 
 function getStepContent(step) {
+  console.log("getStepContent", step);
   switch (step) {
     case 0:
-      return <Details />;
-    case 1:
       return <PaymentMode />;
-    case 2:
+    case 1:
       return <PayCard />;
-    case 3:
+    case 2:
+      console.log("getStepContent", step);
       return <Success />;
     default:
       return "Unknown step";
   }
 }
 
-export default function Form({backToMainScreen,screenData}) {
+
+export default function Form({ backToMainScreen, screenData }) {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const steps = getSteps();
 
@@ -81,15 +85,65 @@ export default function Form({backToMainScreen,screenData}) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    if (activeStep === 1) {
+      payment(newSkipped);
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSkipped(newSkipped);
+    }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  async function generateTicketsArray(noOfTickets) {
 
+    let result = [];
+
+    for (let i = 0; i < noOfTickets; i++) {
+      const unique_id = uuid();
+      const small_id = unique_id.slice(0, 8)
+      result.push({
+        ticketId:small_id,
+        ticketQR: "ABC",
+        ticketStatus: "confirmed"
+      }
+      )
+    }
+
+    return result;
+  }
+  async function payment(newSkipped) {
+
+    try {
+      const {sessionId, fare,ticketType,ticketsNo,fromStation,toStation} = screenData;
+      const unique_id = uuid();
+      const small_id = unique_id.slice(0, 8)
+      let tickestArray = await generateTicketsArray(ticketsNo);
+      let price = fare;
+      if(ticketType!=="one_way")
+      {
+        price = fare*ticketsNo*2*0.9;
+      } else{
+        price = fare*ticketsNo;
+      }
+        let postData = {
+          transactionId: small_id,
+          sessionId:sessionId,
+          transactionAmount: price,
+          ticketType: ticketType,
+          numberOfTickets: ticketsNo,
+          sourceStation: fromStation.stationCode,
+          destinationStation: toStation.stationCode,
+          tickets: tickestArray,
+        };
+      const { data } = await paymentApiCall(postData);
+
+      console.log("data", data)
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSkipped(newSkipped);
+    } catch (error) { }
+  }
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
       // You probably want to guard against something like this,
@@ -106,7 +160,7 @@ export default function Form({backToMainScreen,screenData}) {
   };
 
   const handleReset = () => {
-    setActiveStep(1);
+    setActiveStep(0);
   };
 
   return (
@@ -114,7 +168,7 @@ export default function Form({backToMainScreen,screenData}) {
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid item xs={12}>
           <AppBar position="static" style={{ background: "#2E3B55" }}>
-           
+
           </AppBar>
         </Grid>
         <Grid item xs={6}>
@@ -131,7 +185,7 @@ export default function Form({backToMainScreen,screenData}) {
                     position="static"
                     style={{ background: "#2E3B55", alignItems: "center" }}
                   >
-                 
+
                   </AppBar>
                 </Grid>
                 <Grid item xs={12}>
@@ -180,7 +234,7 @@ export default function Form({backToMainScreen,screenData}) {
                         </Typography>
                         <div className={classes.actions}>
                           <Button
-                            disabled={activeStep === 1}
+                            disabled={activeStep === 0}
                             onClick={handleBack}
                             className={classes.button}
                           >

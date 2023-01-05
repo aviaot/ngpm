@@ -9,7 +9,7 @@ import { useToaster } from "react-hot-toast/headless";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import PayCard from "./component/PayCard";
 import PaymentForm from "./component/Form";
-import { getStationList,getFare } from "./api/agent";
+import { getStationList,getFare,paymentApiCall } from "./api/agent";
 import toast, { Toaster } from "react-hot-toast";
 import './index.css'
 
@@ -42,6 +42,8 @@ function App() {
   const notifySuccess = (message: string) => toast.success(message);
   const notifyError = (message: string) => toast.error(message);
 
+
+
   useEffect(() => {
     if(fromStation && toStation && fromStation.stationCode !==toStation.stationCode)
     {
@@ -57,7 +59,7 @@ function App() {
       if(fromStation && fromStation?.stationCode && toStation && toStation?.stationCode){
       const { data } = await getFare(fromStation.stationCode, toStation.stationCode);
       let fare_ = data.fare;
-      fare_ = fare_.split("")[0];
+     // fare_ = fare_.split("")[0];
       setFare(fare_);
       }
     } catch (error) {}
@@ -133,6 +135,7 @@ function App() {
       }
       if (res.sessionId) {
         setSessionId(res.sessionId);
+        setIsPaymentPage(true);
       }
       
     }

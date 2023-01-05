@@ -127,7 +127,7 @@ export default class PayCard extends React.Component {
                       placeholder="Valid Thru"
                       pattern="\d\d/\d\d"
                       required
-                      style={{ width: 300, margin: "5px" }}
+                      style={{ width: 150, margin: "5px" }}
                       onChange={this.handleInputChange}
                       onFocus={this.handleInputFocus}
                     />
@@ -141,7 +141,7 @@ export default class PayCard extends React.Component {
                       placeholder="CVC"
                       pattern="\d{3,4}"
                       required
-                      style={{ width: 300, margin: "5px" }}
+                      style={{ width: 140, margin: "5px" }}
                       onChange={this.handleInputChange}
                       onFocus={this.handleInputFocus}
                     />
