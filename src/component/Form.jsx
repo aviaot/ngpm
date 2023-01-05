@@ -116,12 +116,12 @@ export default function Form({ backToMainScreen, screenData }) {
   async function payment(newSkipped) {
 
     try {
-      const {sessionId, fare,ticketType,ticketsNo,fromStation,toStation} = screenData;
+      const {sessionId, fare,ticketType,ticketsNo,fromStation,toStation,checkedType,phoneNumber} = screenData;
       const unique_id = uuid();
       const small_id = unique_id.slice(0, 8)
       let tickestArray = await generateTicketsArray(ticketsNo);
       let price = fare;
-      if(ticketType!=="one_way")
+      if(checkedType)
       {
         price = fare*ticketsNo*2*0.9;
       } else{
@@ -131,10 +131,11 @@ export default function Form({ backToMainScreen, screenData }) {
           transactionId: small_id,
           sessionId:sessionId,
           transactionAmount: price,
-          ticketType: ticketType,
+          ticketType: checkedType?"two_way":"one_way",
           numberOfTickets: ticketsNo,
           sourceStation: fromStation.stationCode,
           destinationStation: toStation.stationCode,
+          phoneNumber:phoneNumber,
           tickets: tickestArray,
         };
       const { data } = await paymentApiCall(postData);

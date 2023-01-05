@@ -5,7 +5,8 @@ import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import GoogleMap from "./component/GoogleMap";
 import { useToaster } from "react-hot-toast/headless";
-
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { Wrapper } from "@googlemaps/react-wrapper";
 import PayCard from "./component/PayCard";
 import PaymentForm from "./component/Form";
@@ -26,6 +27,7 @@ interface QueryParamData {
   numberOfTickets: null | string;
   sourceStation: null | string;
   destinationStation: null | string;
+  phoneNumber: null | string;
 }
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
   const [ticketsNo, setTicketsNo] = useState(1);
   const [ticketType, setTicketType] = useState("");
   const [sessionId,setSessionId] = useState("");
+  const [phoneNumber,setPhoneNumber] = useState("");
+  const [checkedType, setCheckedType] = React.useState([true, false]);
   const [stationList, setStationList] = useState<StationListData[]>([
     { sourceStation: "Khapri", stationCode: "KHP", name: "Khapri", _id: "1" },
   ]);
@@ -132,16 +136,32 @@ function App() {
       }
       if (res.typeOfTickets) {
         setTicketType(res.typeOfTickets);
+        if(res.typeOfTickets === "one_way")
+        {
+          setCheckedType([false, checkedType[0]]);
+        } else{
+          setCheckedType([true, checkedType[0]]);
+        }
       }
       if (res.sessionId) {
         setSessionId(res.sessionId);
         setIsPaymentPage(true);
+      }
+      if (res.phoneNumber) {
+        setPhoneNumber(res.phoneNumber);
+        
       }
       
     }
     console.log("getQueryParams", res, typeof res);
   }, [stationList]);
 
+  const handleCheckType = (event : any) => {
+    setCheckedType([event.target.checked, checkedType[0]]);
+  };
+  const getFareAfterCalculation =()=>{
+    return checkedType[0]?(fare*ticketsNo*2*0.9):(fare*ticketsNo);
+  }
   const backToMainScreen = (isPaymentSuccess : boolean) => {
     setIsPaymentPage(false);
 
@@ -281,7 +301,11 @@ function App() {
                             }}
                           />
                           </div>
-                        </Box>
+                                  <FormControlLabel
+                label={checkedType[0]?"Two Way":"One Way"}
+                control={<Checkbox checked={checkedType[0]} onChange={handleCheckType} />}
+              />
+                                </Box>
                         
                       </div>
                       {/* <div className="mb-0">
@@ -299,15 +323,16 @@ function App() {
                   <h5 className="card-title pricing-card-title advance-filter">
                     Advanced Filter
                   </h5> */}
+                  
                       {fromStation &&
                       toStation &&
                       fromStation.stationCode !== toStation.stationCode ? (
                         <h5 className="card-title pricing-card-title advance-filter">
-                          {`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`}
+                          {`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo},${checkedType[0]?"two_way":"one_way"}`}
                         </h5>
                       ) : null}
                       <h5 className="card-title pricing-card-title advance-filter">
-                        {`Total Fare : ${fare * ticketsNo} ₹`}
+                        {`Total Fare : ${getFareAfterCalculation()} ₹`}
                       </h5>
                       <div>
                       <button
@@ -327,9 +352,9 @@ function App() {
                               );
                             } else {
                               if ("clipboard" in navigator) {
-                                await navigator.clipboard.writeText(`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`);
+                                await navigator.clipboard.writeText(`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo},${checkedType[0]?"two_way":"one_way"}`);
                               } else {
-                                document.execCommand("copy", true, `${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`);
+                                document.execCommand("copy", true, `${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo},${checkedType[0]?"two_way":"one_way"}`);
                               }
                               notifySuccess(
                                 "Data Copied"
@@ -345,7 +370,7 @@ function App() {
                         Copy
                       </button> 
           
-        </div>
+                      </div>
                       {/* <div>
                         <div>
                           <img
@@ -411,7 +436,7 @@ function App() {
           <div className="row">
             <div className="col">
               <div className="card-body">
-                <PaymentForm backToMainScreen={backToMainScreen} screenData= {{sessionId:sessionId, fare:fare,ticketType:ticketType,ticketsNo:ticketsNo,fromStation:fromStation,toStation:toStation}}/>
+                <PaymentForm backToMainScreen={backToMainScreen} screenData= {{sessionId:sessionId, fare:fare,ticketType:ticketType,ticketsNo:ticketsNo,fromStation:fromStation,toStation:toStation,checkedType:checkedType[0],phoneNumber:phoneNumber}}/>
               </div>
             </div>
           </div>
