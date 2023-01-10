@@ -127,14 +127,14 @@ function App() {
     if (stationList && stationList.length > 1 && res) {
       if (res.sourceStation) {
         let sourceObject = stationList.find(
-          (i) => i.stationCode === res.sourceStation
+          (i) => i.stationCode.toUpperCase() === res.sourceStation!.toUpperCase()
         );
         console.log("sourceObject", sourceObject);
         setFromStation(sourceObject as StationListData);
       }
       if (res.destinationStation) {
         let destiObject = stationList.find(
-          (i) => i.stationCode === res.destinationStation
+          (i) => i.stationCode.toUpperCase() === res.destinationStation!.toUpperCase()
         );
         console.log("sourceObject", destiObject);
         setToStation(destiObject as StationListData);
