@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { IconButton, Snackbar } from "@mui/material";
+import ShareIcon from "@mui/icons-material/ContentCopy";
 import Autocomplete from "@mui/material/Autocomplete";
 import GoogleMap from "./component/GoogleMap";
 import { useToaster } from "react-hot-toast/headless";
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import PayCard from "./component/PayCard";
 import PaymentForm from "./component/Form";
-import { getStationList,getFare,paymentApiCall } from "./api/agent";
+import { getStationList, getFare, paymentApiCall } from "./api/agent";
 import toast, { Toaster } from "react-hot-toast";
-import './index.css'
+import "./index.css";
 
 interface StationListData {
   _id: string;
@@ -35,9 +37,10 @@ function App() {
   const [toStation, setToStation] = useState<StationListData | null>(null);
   const [ticketsNo, setTicketsNo] = useState(1);
   const [ticketType, setTicketType] = useState("");
-  const [sessionId,setSessionId] = useState("");
-  const [phoneNumber,setPhoneNumber] = useState("");
-  const [checkedType, setCheckedType] = React.useState([true, false]);
+  const [sessionId, setSessionId] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [checkedType, setCheckedType] = React.useState([false, false]);
+  const [isTicketNumberError, setIsTicketNumberError] = useState(false);
   const [stationList, setStationList] = useState<StationListData[]>([
     { sourceStation: "Khapri", stationCode: "KHP", name: "Khapri", _id: "1" },
   ]);
@@ -46,25 +49,33 @@ function App() {
   const notifySuccess = (message: string) => toast.success(message);
   const notifyError = (message: string) => toast.error(message);
 
-
-
   useEffect(() => {
-    if(fromStation && toStation && fromStation.stationCode !==toStation.stationCode)
-    {
+    if (
+      fromStation &&
+      toStation &&
+      fromStation.stationCode !== toStation.stationCode
+    ) {
       getFareData();
-    } else{
+    } else {
       setFare(0);
     }
-
   }, [fromStation, toStation]);
 
   async function getFareData() {
     try {
-      if(fromStation && fromStation?.stationCode && toStation && toStation?.stationCode){
-      const { data } = await getFare(fromStation.stationCode, toStation.stationCode);
-      let fare_ = data.fare;
-     // fare_ = fare_.split("")[0];
-      setFare(fare_);
+      if (
+        fromStation &&
+        fromStation?.stationCode &&
+        toStation &&
+        toStation?.stationCode
+      ) {
+        const { data } = await getFare(
+          fromStation.stationCode,
+          toStation.stationCode
+        );
+        let fare_ = data.fare;
+        // fare_ = fare_.split("")[0];
+        setFare(fare_);
       }
     } catch (error) {}
   }
@@ -136,10 +147,9 @@ function App() {
       }
       if (res.typeOfTickets) {
         setTicketType(res.typeOfTickets);
-        if(res.typeOfTickets === "one_way")
-        {
+        if (res.typeOfTickets === "one_way") {
           setCheckedType([false, checkedType[0]]);
-        } else{
+        } else {
           setCheckedType([true, checkedType[0]]);
         }
       }
@@ -149,23 +159,20 @@ function App() {
       }
       if (res.phoneNumber) {
         setPhoneNumber(res.phoneNumber);
-        
       }
-      
     }
     console.log("getQueryParams", res, typeof res);
   }, [stationList]);
 
-  const handleCheckType = (event : any) => {
+  const handleCheckType = (event: any) => {
     setCheckedType([event.target.checked, checkedType[0]]);
   };
-  const getFareAfterCalculation =()=>{
-    return checkedType[0]?(fare*ticketsNo*2*0.9):(fare*ticketsNo);
-  }
-  const backToMainScreen = (isPaymentSuccess : boolean) => {
+  const getFareAfterCalculation = () => {
+    return checkedType[0] ? fare * ticketsNo * 2 * 0.9 : fare * ticketsNo;
+  };
+  const backToMainScreen = (isPaymentSuccess: boolean) => {
     setIsPaymentPage(false);
-
-  }
+  };
   return (
     <>
       {isPayment === false ? (
@@ -278,35 +285,49 @@ function App() {
                       </div>
                       <div className="mb-3">
                         <label className="form-label custom-label">
-                          Please enter number of ticets:
+                          Please enter number of tickets:
                         </label>
                         <Box
                           component={"form"}
                           sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
                           noValidate
                           autoComplete="off"
-                        ><div>
-                          <TextField
-                            id="outlined-number"
-                            variant="outlined"
-                            label="number"
-                            type="number"
-                            value={ticketsNo}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            onChange={(event : any) => {
-                              //console.log(val);
-                              setTicketsNo(event.target.value);
-                            }}
-                          />
+                        >
+                          <div>
+                            <TextField
+                              error={isTicketNumberError}
+                              id="outlined-number"
+                              variant="outlined"
+                              label="Maximum 6"
+                              type="number"
+                              value={ticketsNo}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              onChange={(event: any) => {
+                                //console.log(val);
+                                if (
+                                  event.target.value < 1 ||
+                                  event.target.value > 6
+                                ) {
+                                  //setIsTicketNumberError(true);
+                                } else {
+                                  setTicketsNo(event.target.value);
+                                  //setIsTicketNumberError(false);
+                                }
+                              }}
+                            />
                           </div>
-                                  <FormControlLabel
-                label={checkedType[0]?"Two Way":"One Way"}
-                control={<Checkbox checked={checkedType[0]} onChange={handleCheckType} />}
-              />
-                                </Box>
-                        
+                          <FormControlLabel
+                            label={"Return"}
+                            control={
+                              <Checkbox
+                                checked={checkedType[0]}
+                                onChange={handleCheckType}
+                              />
+                            }
+                          />
+                        </Box>
                       </div>
                       {/* <div className="mb-0">
                     <label className="form-label custom-label">Leaving:</label>
@@ -323,54 +344,56 @@ function App() {
                   <h5 className="card-title pricing-card-title advance-filter">
                     Advanced Filter
                   </h5> */}
-                  
+
                       {fromStation &&
                       toStation &&
                       fromStation.stationCode !== toStation.stationCode ? (
-                        <h5 className="card-title pricing-card-title advance-filter">
-                          {`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo},${checkedType[0]?"two_way":"one_way"}`}
-                        </h5>
+                        <div className="row">
+                          <h5>
+                            {`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`}
+                            <IconButton
+                              color="primary"
+                              onClick={async (e) => {
+                                //e.target.focus();
+
+                                if (fromStation && toStation) {
+                                  if (
+                                    fromStation.stationCode ===
+                                    toStation.stationCode
+                                  ) {
+                                    notifyError(
+                                      "Source and destination can not be same"
+                                    );
+                                  } else {
+                                    if ("clipboard" in navigator) {
+                                      await navigator.clipboard.writeText(
+                                        `${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`
+                                      );
+                                    } else {
+                                      document.execCommand(
+                                        "copy",
+                                        true,
+                                        `${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo}`
+                                      );
+                                    }
+                                    notifySuccess("Data Copied");
+                                  }
+                                } else {
+                                  notifyError(
+                                    "Source or destination can not be empty"
+                                  );
+                                }
+                              }}
+                            >
+                              <ShareIcon />
+                            </IconButton>
+                          </h5>
+                        </div>
                       ) : null}
                       <h5 className="card-title pricing-card-title advance-filter">
                         {`Total Fare : ${getFareAfterCalculation()} ₹`}
                       </h5>
-                      <div>
-                      <button
-                        type="button"
-                        className="w-45 btn btn-lg btn-primary submit-btn"
-                        onClick={async(e) => {
-                          
-                          //e.target.focus();
-                        
-                       
-                          if (fromStation && toStation) {
-                            if (
-                              fromStation.stationCode === toStation.stationCode
-                            ) {
-                              notifyError(
-                                "Source and destination can not be same"
-                              );
-                            } else {
-                              if ("clipboard" in navigator) {
-                                await navigator.clipboard.writeText(`${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo},${checkedType[0]?"two_way":"one_way"}`);
-                              } else {
-                                document.execCommand("copy", true, `${fromStation?.stationCode},${toStation?.stationCode},${ticketsNo},${checkedType[0]?"two_way":"one_way"}`);
-                              }
-                              notifySuccess(
-                                "Data Copied"
-                              );
-                            }
-                          } else {
-                            notifyError(
-                              "Source or destination can not be empty"
-                            );
-                          }
-                        }}
-                      >
-                        Copy
-                      </button> 
-          
-                      </div>
+
                       {/* <div>
                         <div>
                           <img
@@ -436,7 +459,19 @@ function App() {
           <div className="row">
             <div className="col">
               <div className="card-body">
-                <PaymentForm backToMainScreen={backToMainScreen} screenData= {{sessionId:sessionId, fare:fare,ticketType:ticketType,ticketsNo:ticketsNo,fromStation:fromStation,toStation:toStation,checkedType:checkedType[0],phoneNumber:phoneNumber}}/>
+                <PaymentForm
+                  backToMainScreen={backToMainScreen}
+                  screenData={{
+                    sessionId: sessionId,
+                    fare: fare,
+                    ticketType: ticketType,
+                    ticketsNo: ticketsNo,
+                    fromStation: fromStation,
+                    toStation: toStation,
+                    checkedType: checkedType[0],
+                    phoneNumber: phoneNumber,
+                  }}
+                />
               </div>
             </div>
           </div>

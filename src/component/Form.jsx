@@ -118,7 +118,7 @@ export default function Form({ backToMainScreen, screenData }) {
     try {
       const {sessionId, fare,ticketType,ticketsNo,fromStation,toStation,checkedType,phoneNumber} = screenData;
       const unique_id = uuid();
-      const small_id = unique_id.slice(0, 8)
+      //const small_id = unique_id.slice(0, 8)
       let tickestArray = await generateTicketsArray(ticketsNo);
       let price = fare;
       if(checkedType)
@@ -128,7 +128,7 @@ export default function Form({ backToMainScreen, screenData }) {
         price = fare*ticketsNo;
       }
         let postData = {
-          transactionId: small_id,
+          transactionId: unique_id,
           sessionId:sessionId,
           transactionAmount: price,
           ticketType: checkedType?"two_way":"one_way",
